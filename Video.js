@@ -3,6 +3,8 @@ import {StyleSheet, requireNativeComponent, NativeModules, View, Image} from 're
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 import VideoResizeMode from './VideoResizeMode.js';
 
+const ReactVideoModule = NativeModules.ReactVideoModule;
+
 const styles = StyleSheet.create({
   base: {
     overflow: 'hidden',
@@ -10,6 +12,11 @@ const styles = StyleSheet.create({
 });
 
 export default class Video extends Component {
+
+  static constants = {
+    CaptureMode: ReactVideoModule.CaptureMode,
+    CaptureTarget: ReactVideoModule.CaptureTarget
+  };
 
   constructor(props) {
     super(props);
@@ -34,7 +41,15 @@ export default class Video extends Component {
   dismissFullscreenPlayer = () => {
     this.setNativeProps({ fullscreen: false });
   };
-
+  capture(options) {
+    options = {
+      mode: Video.constants.CaptureMode.still,
+      target: Video.constants.CaptureTarget.cameraRoll,
+      ...options
+    };
+    console.log(options);
+    return ReactVideoModule.capture(options).then(data => data).catch(err => err);
+  }
   _assignRoot = (component) => {
     this._root = component;
   };

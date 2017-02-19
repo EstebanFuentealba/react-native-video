@@ -1,6 +1,7 @@
 package com.brentvatne.react;
 
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -12,7 +13,12 @@ import android.webkit.CookieManager;
 import android.widget.MediaController;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.yqritc.scalablevideoview.ScalableType;
@@ -24,8 +30,15 @@ import com.yqritc.scalablevideoview.ScaleManager;
 import com.yqritc.scalablevideoview.Size;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import com.utils.ImageUtil;
+import com.utils.AnimatedGifEncoder;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.lang.Thread;
 
 public class ReactVideoView extends ScalableVideoView implements MediaPlayer.OnPreparedListener, MediaPlayer
         .OnErrorListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnInfoListener, LifecycleEventListener, MediaController.MediaPlayerControl {
@@ -104,6 +117,7 @@ public class ReactVideoView extends ScalableVideoView implements MediaPlayer.OnP
     private int mVideoBufferedDuration = 0;
     private boolean isCompleted = false;
     private boolean mUseNativeControls = false;
+    private static ReactVideoView _reactVideoView;
 
     public ReactVideoView(ThemedReactContext themedReactContext) {
         super(themedReactContext);
@@ -131,8 +145,15 @@ public class ReactVideoView extends ScalableVideoView implements MediaPlayer.OnP
                 }
             }
         };
+        this._reactVideoView = this;
     }
-
+    public static ReactVideoView getReactVideoViewSingleton() {
+        return _reactVideoView;
+    }
+    public static Bitmap captureSnapShot()
+    {
+        return _reactVideoView.getBitmap();
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mUseNativeControls) {

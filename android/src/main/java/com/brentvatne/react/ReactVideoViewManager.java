@@ -10,6 +10,11 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.yqritc.scalablevideoview.ScalableType;
+import com.facebook.react.bridge.ReactMethod;
+
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.bridge.Promise;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -34,11 +39,13 @@ public class ReactVideoViewManager extends SimpleViewManager<ReactVideoView> {
     public static final String PROP_RATE = "rate";
     public static final String PROP_PLAY_IN_BACKGROUND = "playInBackground";
     public static final String PROP_CONTROLS = "controls";
+    public static final String PROP_CAPTURE = "capture";
 
     @Override
     public String getName() {
         return REACT_CLASS;
     }
+
 
     @Override
     protected ReactVideoView createViewInstance(ThemedReactContext themedReactContext) {
@@ -71,6 +78,7 @@ public class ReactVideoViewManager extends SimpleViewManager<ReactVideoView> {
                 "ScaleAspectFill", Integer.toString(ScalableType.CENTER_CROP.ordinal())
         );
     }
+
 
     @ReactProp(name = PROP_SRC)
     public void setSrc(final ReactVideoView videoView, @Nullable ReadableMap src) {

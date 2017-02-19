@@ -232,6 +232,53 @@ Seeks the video to the specified time (in seconds). Access using a ref to the co
 
 Toggles a fullscreen player. Access using a ref to the component.
 
+#### `capture([options]): Promise`
+Capture a snapshot from video. Access using a ref to the component. What is captured is based on the `captureMode` and `captureTarget` props. `captureMode` tells the snapshot whether you want a still image or animation(gif). `captureTarget` allows you to specify how you want the data to be captured and sent back to you. See `captureTarget` under Properties to see the available values.
+
+Supported options:
+ - `mode` (See  `captureMode` under Properties)
+ - `target` (See `captureTarget` under Properties)
+ 
+
+#### `captureMode`
+
+Values: `Video.constants.CaptureMode.still` (default), `Camera.constants.CaptureMode.animation`
+
+The type of capture that will be performed by the snapshot - either a still image or animation.
+
+#### `captureTarget`
+
+Values: `Video.constants.CaptureTarget.cameraRoll` (default), `Video.constants.CaptureTarget.disk`, `Video.constants.CaptureTarget.memory`
+
+#### Example capture
+```
+onCapture() {
+  this.refs["video"].capture({
+    captureMode: Video.constants.CaptureMode.still,
+    captureTarget: Video.constants.CaptureTarget.cameraRoll
+  }).then((data) => {
+    console.log("dir file", data);
+  }).catch((err) => {
+    console.error(err);
+  })
+}
+render() {
+  return (<View>
+    <TouchableHighlight onPress={this.onCapture.bind(this)}>
+      <Video
+          ref="video"
+          repeat
+          resizeMode='cover'
+          source={require('../assets/video/turntable.mp4')}
+          style={styles.backgroundVideo}
+        />
+    </TouchableHighlight>
+  </View>);
+}
+
+```
+
+
 ## Examples
 
 - See an [Example integration][1] in `react-native-login` *note that this example uses an older version of this library, before we used `export default` -- if you use `require` you will need to do `require('react-native-video').default` as per instructions above.*

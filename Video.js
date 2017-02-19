@@ -44,8 +44,8 @@ export default class Video extends Component {
   capture(options) {
     if (Platform.OS === "android") {
       options = {
-        mode: Video.constants.CaptureMode.still,
-        target: Video.constants.CaptureTarget.cameraRoll,
+        captureMode: Video.constants.CaptureMode.still,
+        captureTarget: Video.constants.CaptureTarget.cameraRoll,
         ...options
       };
       return ReactVideoModule.capture(options).then(data => data).catch(err => err);

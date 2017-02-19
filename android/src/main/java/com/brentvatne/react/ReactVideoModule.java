@@ -91,11 +91,11 @@ public class ReactVideoModule extends ReactContextBaseJavaModule {
             WritableMap response = new WritableNativeMap();
             File pictureFile;
 
-            if(options.getInt("mode") == CAPTURE_MODE_STILL) {
-                switch (options.getInt("target")) {
+            if(options.getInt("captureMode") == CAPTURE_MODE_STILL) {
+                switch (options.getInt("captureTarget")) {
                     case CAPTURE_TARGET_DISK:
                         pictureFile = getOutputFile(
-                                options.getInt("mode"),
+                                options.getInt("captureMode"),
                                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                         );
                         Throwable error = writeDataToFile(ImageUtil.getByteArray(ReactVideoView.captureSnapShot()), pictureFile);
@@ -109,7 +109,7 @@ public class ReactVideoModule extends ReactContextBaseJavaModule {
                     case CAPTURE_TARGET_CAMERA_ROLL:
                         ContentValues values = new ContentValues();
                         pictureFile = getOutputFile(
-                                options.getInt("mode"),
+                                options.getInt("captureMode"),
                                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
                         );
                         values.put(MediaStore.Video.Media.DATA, pictureFile.getPath());
@@ -131,7 +131,7 @@ public class ReactVideoModule extends ReactContextBaseJavaModule {
                         promise.resolve(response);
                         break;
                 }
-            } else if(options.getInt("mode") == CAPTURE_MODE_ANIMATION) {
+            } else if(options.getInt("captureMode") == CAPTURE_MODE_ANIMATION) {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 AnimatedGifEncoder encoder = new AnimatedGifEncoder();
                 encoder.start(bos);
@@ -147,10 +147,10 @@ public class ReactVideoModule extends ReactContextBaseJavaModule {
                 }
                 encoder.finish();
 
-                switch (options.getInt("target")) {
+                switch (options.getInt("captureTarget")) {
                     case CAPTURE_TARGET_DISK:
                         pictureFile = getOutputFile(
-                                options.getInt("mode"),
+                                options.getInt("captureMode"),
                                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                         );
                         Throwable error = writeDataToFile(bos.toByteArray() , pictureFile);
@@ -164,7 +164,7 @@ public class ReactVideoModule extends ReactContextBaseJavaModule {
                     case CAPTURE_TARGET_CAMERA_ROLL:
                         ContentValues values = new ContentValues();
                         pictureFile = getOutputFile(
-                                options.getInt("mode"),
+                                options.getInt("captureMode"),
                                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
                         );
                         values.put(MediaStore.Video.Media.DATA, pictureFile.getPath());

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {StyleSheet, requireNativeComponent, NativeModules, View, Image} from 'react-native';
+import {StyleSheet, requireNativeComponent, NativeModules, View, Image, Platform} from 'react-native';
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 import VideoResizeMode from './VideoResizeMode.js';
 
@@ -42,13 +42,16 @@ export default class Video extends Component {
     this.setNativeProps({ fullscreen: false });
   };
   capture(options) {
-    options = {
-      mode: Video.constants.CaptureMode.still,
-      target: Video.constants.CaptureTarget.cameraRoll,
-      ...options
-    };
-    console.log(options);
-    return ReactVideoModule.capture(options).then(data => data).catch(err => err);
+    if (Platform.OS === "android") {
+      options = {
+        mode: Video.constants.CaptureMode.still,
+        target: Video.constants.CaptureTarget.cameraRoll,
+        ...options
+      };
+      return ReactVideoModule.capture(options).then(data => data).catch(err => err);
+    } else {
+      throw new Exception("not implemented");
+    }
   }
   _assignRoot = (component) => {
     this._root = component;

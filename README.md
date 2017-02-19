@@ -236,8 +236,8 @@ Toggles a fullscreen player. Access using a ref to the component.
 Capture a snapshot from video. Access using a ref to the component. What is captured is based on the `captureMode` and `captureTarget` props. `captureMode` tells the snapshot whether you want a still image or animation(gif). `captureTarget` allows you to specify how you want the data to be captured and sent back to you. See `captureTarget` under Properties to see the available values.
 
 Supported options:
- - `mode` (See  `captureMode` under Properties)
- - `target` (See `captureTarget` under Properties)
+ - `captureMode` (See  `captureMode` under Properties)
+ - `captureTarget` (See `captureTarget` under Properties)
  
 
 #### `captureMode`
